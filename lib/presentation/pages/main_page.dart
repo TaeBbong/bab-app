@@ -21,6 +21,7 @@ class MainPage extends StatelessWidget {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
+              Text('⏰ 신청/취소 마감은 당일 오전 8시반입니다. ⏰'),
               TableCalendar(
                 locale: 'ko_KR',
                 firstDay: DateTime(2000, 1, 1),
