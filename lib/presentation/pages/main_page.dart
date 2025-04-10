@@ -2,27 +2,22 @@ import 'package:bab/core/utils/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../core/themes/box_decoration_theme.dart';
 import '../../core/themes/palette.dart';
 
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final ThemeData appTheme = Theme.of(context);
+    final TextTheme textTheme = appTheme.textTheme;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(
-          '🗓 일정',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Palette.black,
-          ),
-        ),
+        title: Text('🗓 신청 현황', style: textTheme.titleLarge),
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
             TableCalendar(
@@ -72,9 +67,9 @@ class MainPage extends StatelessWidget {
                 dowBuilder: (context, day) {
                   final text = MyDateUtils.weekdayLabel(day.weekday);
                   Color? color;
-                  if (day.weekday == DateTime.sunday) {
+                  if (day.weekday + 1 == DateTime.sunday) {
                     color = Colors.red;
-                  } else if (day.weekday == DateTime.saturday) {
+                  } else if (day.weekday + 1 == DateTime.saturday) {
                     color = Colors.blue;
                   }
                   return Center(
@@ -116,12 +111,8 @@ class MainPage extends StatelessWidget {
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(16),
-              margin: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
+              // margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: appTheme.extension<BoxDecorationTheme>()!.card,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -129,22 +120,18 @@ class MainPage extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     '권태형 김철수 박지철 윤철수 김철수 정현철 김지철 양철철 민철철 강현철',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[800]),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodySmall,
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Text('오늘 내 신청 상태', style: textTheme.titleMedium),
-                      SizedBox(width: 8),
-                      Text('미신청', style: textTheme.labelMedium),
-                    ],
-                  ),
+                  const SizedBox(height: 16),
+                  Text('오늘 내 신청 상태', style: textTheme.titleMedium),
+                  SizedBox(height: 4),
+                  Text('미신청', style: textTheme.labelMedium),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const Spacer(),
             SizedBox(
               width: double.infinity,
               height: 48,
