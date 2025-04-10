@@ -21,7 +21,8 @@ class MainPage extends StatelessWidget {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              Text('⏰ 신청/취소 마감은 당일 오전 8시반입니다. ⏰'),
+              Text('⏰ 신청/취소 마감은 당일 08:30입니다. ⏰'),
+              Text('⏰ 당일 08:30까지 입금하지 않으면 자동 취소됩니다. ⏰'),
               TableCalendar(
                 locale: 'ko_KR',
                 firstDay: DateTime(2000, 1, 1),
