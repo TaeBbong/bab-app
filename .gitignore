@@ -1,6 +1,10 @@
 # FVM Version Cache
 .fvm/
 
+# VS Code
+.vscode
+.vscode/*
+
 # Unused platform
 linux/*
 macos/*
