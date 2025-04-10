@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 
 abstract class Palette {
   /// Chromatic color
-  static Color burgundy = const Color(0xFF800020); // 버건디
+  static Color burgundy = const Color(0xFF800020);
+  static const Color burgundy200 = Color(0xFFDAA5B3); // 밝은 톤
+  static const Color burgundy400 = Color(0xFFB25D75); // 중간 톤
+  static const Color burgundy600 = Color(0xFF99334C); // 살짝 진한 톤
+  static const Color burgundy800 = Color(0xFF660018); // 어두운 톤
+
   static Color beige = const Color(0xFFF5E6CC); // 베이지
   static Color beige100 = const Color(0xFFFAF1E3);
 

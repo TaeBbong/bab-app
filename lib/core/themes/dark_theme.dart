@@ -8,6 +8,12 @@ class DarkTheme {
       primaryColor: Palette.burgundy,
       scaffoldBackgroundColor: Palette.grey900,
       textTheme: TextTheme(
+        displayLarge: TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: Palette.beige,
+        ),
+        displaySmall: TextStyle(fontSize: 16, color: Palette.grey400),
         bodyLarge: TextStyle(color: Palette.beige, fontSize: 18),
         bodyMedium: TextStyle(color: Palette.grey300, fontSize: 16),
         bodySmall: TextStyle(color: Palette.grey400, fontSize: 14),
@@ -17,13 +23,14 @@ class DarkTheme {
         foregroundColor: Palette.beige,
         elevation: 0,
       ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: Palette.burgundy,
-        textTheme: ButtonTextTheme.primary,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStatePropertyAll(Palette.grey800),
+          foregroundColor: WidgetStatePropertyAll(Palette.white),
+          textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 18)),
+        ),
       ),
-      iconTheme: IconThemeData(
-        color: Palette.beige,
-      ),
+      iconTheme: IconThemeData(color: Palette.beige),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Palette.grey800,
@@ -35,7 +42,8 @@ class DarkTheme {
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Palette.beige, width: 2),
         ),
-        hintStyle: TextStyle(color: Palette.grey500),
+        hintStyle: TextStyle(fontSize: 12, color: Palette.grey500),
+        labelStyle: TextStyle(fontSize: 14, color: Palette.grey500),
       ),
     );
   }
