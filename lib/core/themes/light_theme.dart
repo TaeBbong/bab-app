@@ -10,9 +10,25 @@ class LightTheme {
       textTheme: TextTheme(
         displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
         displaySmall: TextStyle(fontSize: 16, color: Palette.grey500),
+        titleLarge: TextStyle(
+          color: Palette.grey900,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        titleMedium: TextStyle(
+          color: Palette.grey800,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+        titleSmall: TextStyle(
+          color: Palette.grey700,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
         bodyLarge: TextStyle(color: Palette.grey900, fontSize: 18),
         bodyMedium: TextStyle(color: Palette.grey800, fontSize: 16),
         bodySmall: TextStyle(color: Palette.grey700, fontSize: 14),
+        labelMedium: TextStyle(color: Colors.red, fontSize: 16),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Palette.white,

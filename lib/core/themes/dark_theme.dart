@@ -14,9 +14,25 @@ class DarkTheme {
           color: Palette.beige,
         ),
         displaySmall: TextStyle(fontSize: 16, color: Palette.grey400),
+        titleLarge: TextStyle(
+          color: Palette.beige,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        titleMedium: TextStyle(
+          color: Palette.grey300,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+        titleSmall: TextStyle(
+          color: Palette.grey400,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
         bodyLarge: TextStyle(color: Palette.beige, fontSize: 18),
         bodyMedium: TextStyle(color: Palette.grey300, fontSize: 16),
         bodySmall: TextStyle(color: Palette.grey400, fontSize: 14),
+        labelMedium: TextStyle(color: Colors.red, fontSize: 16),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Palette.black,
