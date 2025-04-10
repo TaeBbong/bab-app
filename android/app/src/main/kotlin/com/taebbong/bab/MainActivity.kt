@@ -1,4 +1,4 @@
-package com.example.bab
+package com.taebbong.bab
 
 import io.flutter.embedding.android.FlutterActivity
 
