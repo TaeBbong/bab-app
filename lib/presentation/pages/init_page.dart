@@ -1,27 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class InitPage extends StatefulWidget {
-  const InitPage({super.key});
-  @override
-  _InitPageState createState() => _InitPageState();
-}
+import '../controllers/init_controller.dart';
 
-class _InitPageState extends State<InitPage> {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController groupController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    usernameController.dispose();
-    groupController.dispose();
-    super.dispose();
-  }
-
+class InitPage extends StatelessWidget {
+  final InitController controller = Get.put(InitController());
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -39,7 +22,7 @@ class _InitPageState extends State<InitPage> {
               const SizedBox(height: 32),
               TextField(
                 style: textTheme.bodySmall,
-                controller: usernameController,
+                controller: controller.usernameController,
                 decoration: const InputDecoration(
                   labelText: '이름',
                   border: OutlineInputBorder(),
@@ -48,7 +31,7 @@ class _InitPageState extends State<InitPage> {
               const SizedBox(height: 16),
               TextField(
                 style: textTheme.bodySmall,
-                controller: groupController,
+                controller: controller.groupController,
                 decoration: const InputDecoration(
                   labelText: '소속',
                   border: OutlineInputBorder(),
@@ -59,7 +42,7 @@ class _InitPageState extends State<InitPage> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: controller.saveUserInfo,
                   child: const Text('시작하기'),
                 ),
               ),
