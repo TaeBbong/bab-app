@@ -1,31 +1,30 @@
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/utils/mappers.dart';
 import '../../domain/entities/eating.dart';
 import '../../domain/repositories/eating_repository.dart';
 import '../../data/models/eating_model.dart';
 import '../sources/eating_remote_data_source.dart';
+import '../sources/user_info_local_data_source.dart';
 
 @LazySingleton(as: EatingRepository)
 class EatingRepositoryImpl implements EatingRepository {
   final EatingRemoteDataSource _remote;
-  final SharedPreferences _prefs;
+  final UserInfoLocalDataSource _local;
 
-  EatingRepositoryImpl(this._remote, this._prefs);
-
-  String get _username => _prefs.getString('username') ?? '';
-  String get _group => _prefs.getString('group') ?? '';
+  EatingRepositoryImpl(this._remote, this._local);
 
   @override
   Future<void> applyEating(DateTime eatDate) async {
-    final now = DateTime.now();
-    final eating = Eating(
+    final DateTime now = DateTime.now();
+    final String username = await _local.getUsername();
+    final String group = await _local.getGroup();
+    final Eating eating = Eating(
       id: '',
       applyDate: now,
       eatDate: DateTime(eatDate.year, eatDate.month, eatDate.day),
-      username: _username,
-      group: _group,
+      username: username,
+      group: group,
     );
     await _remote.addEating(EatingMapper.toModel(eating));
   }
@@ -39,10 +38,11 @@ class EatingRepositoryImpl implements EatingRepository {
   Future<bool> hasUserEatingOnDate(DateTime date) async {
     final all = await _remote.getAllEatings();
     final targetDate = _dateOnly(date);
+    final String username = await _local.getUsername();
 
     return all.any(
       (model) =>
-          model.username == _username && _dateOnly(model.eatDate) == targetDate,
+          model.username == username && _dateOnly(model.eatDate) == targetDate,
     );
   }
 
@@ -58,10 +58,11 @@ class EatingRepositoryImpl implements EatingRepository {
   @override
   Future<List<EatingModel>> getUserEatingsInMonth(DateTime monthDate) async {
     final all = await _remote.getAllEatings();
+    final String username = await _local.getUsername();
     return all
         .where(
           (model) =>
-              model.username == _username &&
+              model.username == username &&
               model.eatDate.year == monthDate.year &&
               model.eatDate.month == monthDate.month,
         )

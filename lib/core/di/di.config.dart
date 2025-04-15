@@ -44,14 +44,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i507.UserInfoRepository>(
       () => _i926.UserInfoRepositoryImpl(gh<_i748.UserInfoLocalDataSource>()),
     );
+    gh.factory<_i476.RegisterUserUsecase>(
+      () => _i476.RegisterUserUsecase(gh<_i507.UserInfoRepository>()),
+    );
     gh.lazySingleton<_i67.EatingRepository>(
       () => _i80.EatingRepositoryImpl(
         gh<_i768.EatingRemoteDataSource>(),
-        gh<_i460.SharedPreferences>(),
+        gh<_i748.UserInfoLocalDataSource>(),
       ),
-    );
-    gh.factory<_i476.RegisterUserUsecase>(
-      () => _i476.RegisterUserUsecase(gh<_i507.UserInfoRepository>()),
     );
     return this;
   }

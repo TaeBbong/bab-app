@@ -6,6 +6,8 @@ import '../models/user_info_model.dart';
 abstract class UserInfoLocalDataSource {
   Future<void> saveUserInfo(UserInfoModel userInfo);
   Future<UserInfoModel?> getUserInfo();
+  Future<String> getUsername();
+  Future<String> getGroup();
   Future<void> clearUserInfo();
 }
 
@@ -32,6 +34,18 @@ class UserInfoLocalDataSourceImpl implements UserInfoLocalDataSource {
     if (username == null || group == null) return null;
 
     return UserInfoModel(username: username, group: group);
+  }
+
+  @override
+  Future<String> getUsername() async {
+    final username = _prefs.getString(_keyUsername);
+    return username!;
+  }
+
+  @override
+  Future<String> getGroup() async {
+    final group = _prefs.getString(_keyGroup);
+    return group!;
   }
 
   @override
