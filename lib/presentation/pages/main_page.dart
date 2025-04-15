@@ -1,15 +1,18 @@
 import 'package:bab/core/utils/date_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/themes/box_decoration_theme.dart';
 import '../../core/themes/palette.dart';
+import '../controllers/main_controller.dart';
 
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData appTheme = Theme.of(context);
     final TextTheme textTheme = appTheme.textTheme;
+    final MainController controller = Get.put(MainController());
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
