@@ -21,4 +21,14 @@ class UserInfoRepositoryImpl implements UserInfoRepository {
       throw Exception('[-] Error while fetching from server');
     }
   }
+
+  @override
+  Future<UserInfo?> getUserInfo() async {
+    final UserInfoModel? userInfoModel =
+        await userInfoLocalDataSource.getUserInfo();
+    if (userInfoModel != null) {
+      return UserInfoMapper.toEntity(userInfoModel);
+    }
+    return null;
+  }
 }

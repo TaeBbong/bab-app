@@ -15,7 +15,7 @@ class EatingRepositoryImpl implements EatingRepository {
   EatingRepositoryImpl(this._remote, this._local);
 
   @override
-  Future<void> applyEating(DateTime eatDate) async {
+  Future<Eating> applyEating(DateTime eatDate) async {
     final DateTime now = DateTime.now();
     final String username = await _local.getUsername();
     final String group = await _local.getGroup();
@@ -27,6 +27,7 @@ class EatingRepositoryImpl implements EatingRepository {
       group: group,
     );
     await _remote.addEating(EatingMapper.toModel(eating));
+    return eating;
   }
 
   @override
