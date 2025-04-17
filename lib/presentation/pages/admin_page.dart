@@ -29,8 +29,7 @@ class _AdminPageState extends State<AdminPage> {
   final AdminController controller = Get.put(AdminController());
 
   @override
-  void initState() async {
-    await controller.getAllEatings();
+  void initState() {
     super.initState();
   }
 

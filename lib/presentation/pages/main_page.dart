@@ -18,7 +18,6 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    controller.getInitialData();
   }
 
   @override

@@ -15,8 +15,7 @@ class _MyPageState extends State<MyPage> {
   final MyController controller = Get.put(MyController());
 
   @override
-  void initState() async {
-    await controller.getMonthlyUserEatings();
+  void initState() {
     super.initState();
   }
 
