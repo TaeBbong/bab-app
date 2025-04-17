@@ -48,6 +48,12 @@ class EatingRepositoryImpl implements EatingRepository {
   }
 
   @override
+  Future<List<EatingModel>> getAllEatings() async {
+    final all = await _remote.getAllEatings();
+    return all;
+  }
+
+  @override
   Future<List<EatingModel>> getAllEatingsOnDate(DateTime date) async {
     final targetDate = _dateOnly(date);
     final all = await _remote.getAllEatings();
