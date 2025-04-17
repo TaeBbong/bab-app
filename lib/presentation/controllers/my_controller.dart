@@ -40,7 +40,7 @@ class MyController extends GetxController {
     );
     monthlyUserAmount.value = status.values.where((v) => v).length;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      isLoading(true);
+      isLoading(false);
     });
   }
 }
