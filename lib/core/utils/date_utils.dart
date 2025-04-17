@@ -7,4 +7,8 @@ class MyDateUtils {
   static DateTime onlyDates(DateTime date) {
     return DateTime(date.year, date.month, date.day);
   }
+
+  static String dateToString(DateTime date) {
+    return '${date.year}년 ${date.month}월 ${date.day}일(${weekdayLabel(date.weekday - 1)})';
+  }
 }
