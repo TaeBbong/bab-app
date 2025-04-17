@@ -6,21 +6,20 @@ import '../../domain/entities/eating.dart';
 import '../../domain/entities/user_info.dart';
 import '../../domain/usecases/apply_eat_usecase.dart';
 import '../../domain/usecases/cancel_eat_usecase.dart';
-import '../../domain/usecases/daily_all_eat_usecase.dart';
-import '../../domain/usecases/daily_user_eat_usecase.dart';
 import '../../domain/usecases/monthly_all_eat_usecase.dart';
 import '../../domain/usecases/monthly_user_eat_usecase.dart';
 import '../../domain/usecases/get_user_info_usecase.dart';
 
 class MainController extends GetxController {
-  final MonthlyAllEatUsecase monthlyAllEatUsecase =
-      getIt<MonthlyAllEatUsecase>();
-  final MonthlyUserEatUsecase monthlyUserEatUsecase =
-      getIt<MonthlyUserEatUsecase>();
-  final DailyAllEatUsecase dailyAllEatUsecase = getIt<DailyAllEatUsecase>();
-  final DailyUserEatUsecase dailyUserEatUsecase = getIt<DailyUserEatUsecase>();
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
+
+  final MonthlyAllEatUsecase monthlyAllEatUsecase =
+      getIt<MonthlyAllEatUsecase>();
+
+  final MonthlyUserEatUsecase monthlyUserEatUsecase =
+      getIt<MonthlyUserEatUsecase>();
+
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
   Rx<DateTime> focusedDay = DateTime.now().obs;
