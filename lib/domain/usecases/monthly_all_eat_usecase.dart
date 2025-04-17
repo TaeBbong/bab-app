@@ -24,6 +24,22 @@ class MonthlyAllEatUsecase {
 
     final Map<DateTime, List<Eating>> grouped = {};
 
+    final DateTime startDay = DateTime(focusedDay.year, focusedDay.month, 1);
+    final DateTime endDay = DateTime(
+      focusedDay.year,
+      focusedDay.month + 1,
+      1,
+    ).subtract(Duration(days: 1));
+
+    for (
+      DateTime day = startDay;
+      !day.isAfter(endDay);
+      day = day.add(Duration(days: 1))
+    ) {
+      final DateTime date = MyDateUtils.onlyDates(day);
+      grouped[date] = [];
+    }
+
     for (final eating in eatings) {
       final DateTime date = MyDateUtils.onlyDates(eating.eatDate);
 
