@@ -31,7 +31,7 @@ class MonthlyUserEatUsecase {
     for (
       DateTime day = startDay;
       !day.isAfter(endDay);
-      day.add(Duration(days: 1))
+      day = day.add(Duration(days: 1))
     ) {
       final DateTime date = MyDateUtils.onlyDates(day);
       grouped[date] = false;
