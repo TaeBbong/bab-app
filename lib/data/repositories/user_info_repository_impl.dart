@@ -23,12 +23,12 @@ class UserInfoRepositoryImpl implements UserInfoRepository {
   }
 
   @override
-  Future<UserInfo?> getUserInfo() async {
+  Future<UserInfo> getUserInfo() async {
     final UserInfoModel? userInfoModel =
         await userInfoLocalDataSource.getUserInfo();
     if (userInfoModel != null) {
       return UserInfoMapper.toEntity(userInfoModel);
     }
-    return null;
+    return UserInfo(username: '', group: '');
   }
 }

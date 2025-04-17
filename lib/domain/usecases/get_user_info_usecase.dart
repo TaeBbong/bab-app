@@ -9,7 +9,7 @@ class GetUserInfoUsecase {
 
   GetUserInfoUsecase(this.repository);
 
-  Future<UserInfo?> execute() {
+  Future<UserInfo> execute() {
     return repository.getUserInfo();
   }
 }
