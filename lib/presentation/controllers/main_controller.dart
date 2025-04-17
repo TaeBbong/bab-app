@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
@@ -21,21 +20,27 @@ class MainController extends GetxController {
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
   RxBool isLoading = false.obs;
-  Rx<DateTime> focusedDay = DateTime.now().obs;
-  Rx<DateTime> selectedDay = DateTime.now().obs;
+  Rx<DateTime> focusedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
+  Rx<DateTime> selectedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
 
   RxMap<DateTime, bool> monthlyUserEatingMap = <DateTime, bool>{}.obs;
   RxMap<DateTime, List<Eating>> monthlyAllEatingMap =
       <DateTime, List<Eating>>{}.obs;
   Rx<UserInfo> userInfo = UserInfo(username: '', group: '').obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getInitialData();
+  }
+
   void onDaySelected(DateTime selected, DateTime focused) {
-    focusedDay.value = selected;
-    selectedDay.value = selected;
+    focusedDay.value = MyDateUtils.onlyDates(selected);
+    selectedDay.value = MyDateUtils.onlyDates(selected);
   }
 
   void onPageChanged(DateTime focused) {
-    focusedDay.value = focused;
+    focusedDay.value = MyDateUtils.onlyDates(focused);
   }
 
   /// Handler which is onPressed MainPage's apply/cancel button.
@@ -103,14 +108,13 @@ class MainController extends GetxController {
   }
 
   Future<void> getInitialData() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      isLoading(true);
-    });
-    await getMonthlyAllEatings();
-    await getMonthlyUserEatings();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    isLoading(true);
+    try {
+      await getMonthlyAllEatings();
+      await getMonthlyUserEatings();
+    } finally {
       isLoading(false);
-    });
+    }
     return;
   }
 

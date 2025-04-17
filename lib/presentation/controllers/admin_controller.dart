@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
@@ -9,24 +8,29 @@ import '../../domain/usecases/overall_eat_usecase.dart';
 class AdminController extends GetxController {
   final OverallEatUsecase overallEatUsecase = getIt<OverallEatUsecase>();
 
-  Rx<DateTime> selectedDay = DateTime.now().obs;
+  Rx<DateTime> selectedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
   RxString selectedWeekday =
       MyDateUtils.weekdayLabel(DateTime.now().weekday - 1).obs;
   RxMap<DateTime, List<Eating>> totalEatings = <DateTime, List<Eating>>{}.obs;
   RxList<String> dailyApplicants = <String>[].obs;
   RxBool isLoading = false.obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    getAllEatings();
+  }
+
   Future<void> getAllEatings() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      isLoading(true);
-    });
-    final Map<DateTime, List<Eating>> results =
-        await overallEatUsecase.execute();
-    totalEatings.assignAll(results);
-    onDaySelected();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    isLoading(true);
+    try {
+      final Map<DateTime, List<Eating>> results =
+          await overallEatUsecase.execute();
+      totalEatings.assignAll(results);
+      onDaySelected();
+    } finally {
       isLoading(false);
-    });
+    }
   }
 
   void goToPreviousDay() {

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
@@ -12,6 +11,12 @@ class MyController extends GetxController {
   RxInt selectedMonth = DateTime.now().month.obs;
   RxInt monthlyUserAmount = 0.obs;
   RxBool isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getMonthlyUserEatings();
+  }
 
   void goToPreviousMonth() {
     if (selectedMonth.value == 1) {
@@ -32,15 +37,14 @@ class MyController extends GetxController {
   }
 
   Future<void> getMonthlyUserEatings() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      isLoading(true);
-    });
-    final Map<DateTime, bool> status = await monthlyUserEatUsecase.execute(
-      focusedDay: DateTime(selectedYear.value, selectedMonth.value, 1),
-    );
-    monthlyUserAmount.value = status.values.where((v) => v).length;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    isLoading(true);
+    try {
+      final Map<DateTime, bool> status = await monthlyUserEatUsecase.execute(
+        focusedDay: DateTime(selectedYear.value, selectedMonth.value, 1),
+      );
+      monthlyUserAmount.value = status.values.where((v) => v).length;
+    } finally {
       isLoading(false);
-    });
+    }
   }
 }
