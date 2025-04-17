@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
@@ -13,15 +14,13 @@ import '../../domain/usecases/get_user_info_usecase.dart';
 class MainController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
-
   final MonthlyAllEatUsecase monthlyAllEatUsecase =
       getIt<MonthlyAllEatUsecase>();
-
   final MonthlyUserEatUsecase monthlyUserEatUsecase =
       getIt<MonthlyUserEatUsecase>();
-
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
+  RxBool isLoading = false.obs;
   Rx<DateTime> focusedDay = DateTime.now().obs;
   Rx<DateTime> selectedDay = DateTime.now().obs;
 
@@ -67,13 +66,8 @@ class MainController extends GetxController {
   /// Find docId / eating object from where?
   Future<void> cancelEating() async {
     final DateTime cancelDate = MyDateUtils.onlyDates(selectedDay.value);
-    final UserInfo? userInfo = await getUserInfoUsecase.execute();
+    final UserInfo userInfo = await getUserInfoUsecase.execute();
     String docId = '';
-
-    if (userInfo == null) {
-      Get.snackbar('Error occured!', 'Invalid request from unknown user');
-      return;
-    }
 
     if (monthlyAllEatingMap[cancelDate] == null) {
       Get.snackbar('Error occured!', 'Invalid request from empty list in date');
@@ -106,6 +100,18 @@ class MainController extends GetxController {
     }
 
     Get.snackbar('취소 완료', '식사 신청이 취소되었습니다.');
+  }
+
+  Future<void> getInitialData() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isLoading(true);
+    });
+    await getMonthlyAllEatings();
+    await getMonthlyUserEatings();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      isLoading(false);
+    });
+    return;
   }
 
   /// Load all monthly eatings when MainPage renders.
