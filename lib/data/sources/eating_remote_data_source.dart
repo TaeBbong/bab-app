@@ -18,7 +18,7 @@ class EatingRemoteDataSourceImpl implements EatingRemoteDataSource {
   EatingRemoteDataSourceImpl(this._firestore);
 
   CollectionReference<EatingModel> get _collection => _firestore
-      .collection('eatings')
+      .collection('eatings_test')
       .withConverter<EatingModel>(
         fromFirestore:
             (snapshot, _) => EatingModel.fromJson(
