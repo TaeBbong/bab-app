@@ -1,3 +1,4 @@
+import 'package:bab/domain/usecases/overall_eat_usecase.dart';
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
@@ -6,26 +7,28 @@ import '../../domain/entities/eating.dart';
 import '../../domain/entities/user_info.dart';
 import '../../domain/usecases/apply_eat_usecase.dart';
 import '../../domain/usecases/cancel_eat_usecase.dart';
-import '../../domain/usecases/monthly_all_eat_usecase.dart';
-import '../../domain/usecases/monthly_user_eat_usecase.dart';
 import '../../domain/usecases/get_user_info_usecase.dart';
+import '../../domain/usecases/set_monthly_all_eat_usecase.dart';
+import '../../domain/usecases/set_monthly_user_eat_usecase.dart';
 
 class MainController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
-  final MonthlyAllEatUsecase monthlyAllEatUsecase =
-      getIt<MonthlyAllEatUsecase>();
-  final MonthlyUserEatUsecase monthlyUserEatUsecase =
-      getIt<MonthlyUserEatUsecase>();
+  final OverallEatUsecase overallEatUsecase = getIt<OverallEatUsecase>();
+  final SetMonthlyAllEatUsecase setMonthlyAllEatUsecase =
+      getIt<SetMonthlyAllEatUsecase>();
+  final SetMonthlyUserEatUsecase setMonthlyUserEatUsecase =
+      getIt<SetMonthlyUserEatUsecase>();
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
   RxBool isLoading = false.obs;
   Rx<DateTime> focusedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
   Rx<DateTime> selectedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
 
-  RxMap<DateTime, bool> monthlyUserEatingMap = <DateTime, bool>{}.obs;
+  RxMap<DateTime, List<Eating>> allEatingMap = <DateTime, List<Eating>>{}.obs;
   RxMap<DateTime, List<Eating>> monthlyAllEatingMap =
       <DateTime, List<Eating>>{}.obs;
+  RxMap<DateTime, bool> monthlyUserEatingMap = <DateTime, bool>{}.obs;
   Rx<UserInfo> userInfo = UserInfo(username: '', group: '').obs;
 
   @override
@@ -110,30 +113,42 @@ class MainController extends GetxController {
   Future<void> getInitialData() async {
     isLoading(true);
     try {
-      await getMonthlyAllEatings();
-      await getMonthlyUserEatings();
+      await getAllEatings();
     } finally {
+      setMonthlyAllEatings();
+      setMonthlyUserEatings();
       isLoading(false);
     }
     return;
   }
 
-  /// Load all monthly eatings when MainPage renders.
-  Future<void> getMonthlyAllEatings() async {
+  Future<void> getAllEatings() async {
+    final Map<DateTime, List<Eating>> results =
+        await overallEatUsecase.execute();
+    allEatingMap.assignAll(results);
+  }
+
+  Future<void> getUserInfo() async {
+    userInfo.value = await getUserInfoUsecase.execute();
+  }
+
+  void setMonthlyAllEatings() {
     final Map<DateTime, List<Eating>> monthlyAllEatingStatus =
-        await monthlyAllEatUsecase.execute(focusedDay: focusedDay.value);
+        setMonthlyAllEatUsecase.execute(
+          allEatings: allEatingMap,
+          targetMonth: focusedDay.value,
+        );
 
     monthlyAllEatingMap.assignAll(monthlyAllEatingStatus);
   }
 
-  /// Load users' monthly eatings when MainPage renders, to show emoji on calendar.
-  ///
-  /// Runs for focusedDay
-  Future<void> getMonthlyUserEatings() async {
-    userInfo.value = await getUserInfoUsecase.execute();
-
-    final Map<DateTime, bool> userEatingStatus = await monthlyUserEatUsecase
-        .execute(focusedDay: focusedDay.value);
+  void setMonthlyUserEatings() {
+    final Map<DateTime, bool> userEatingStatus = setMonthlyUserEatUsecase
+        .execute(
+          allEatings: allEatingMap,
+          username: userInfo.value.username,
+          targetMonth: focusedDay.value,
+        );
 
     monthlyUserEatingMap.assignAll(userEatingStatus);
   }

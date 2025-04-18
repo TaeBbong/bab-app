@@ -57,8 +57,8 @@ class _MainPageState extends State<MainPage> {
                       },
                       onPageChanged: (focusedDay) {
                         controller.onPageChanged(focusedDay);
-                        controller.getMonthlyAllEatings();
-                        controller.getMonthlyUserEatings();
+                        controller.setMonthlyAllEatings();
+                        controller.setMonthlyUserEatings();
                       },
                       calendarFormat: CalendarFormat.month,
                       availableCalendarFormats: const {
