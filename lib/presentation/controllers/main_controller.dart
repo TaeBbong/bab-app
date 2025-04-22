@@ -1,4 +1,5 @@
 import 'package:bab/domain/usecases/overall_eat_usecase.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
@@ -21,7 +22,7 @@ class MainController extends GetxController {
       getIt<SetMonthlyUserEatUsecase>();
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
-  RxBool isLoading = false.obs;
+  RxBool isLoading = true.obs;
   Rx<DateTime> focusedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
   Rx<DateTime> selectedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
 
@@ -30,6 +31,7 @@ class MainController extends GetxController {
       <DateTime, List<Eating>>{}.obs;
   RxMap<DateTime, bool> monthlyUserEatingMap = <DateTime, bool>{}.obs;
   Rx<UserInfo> userInfo = UserInfo(username: '', group: '').obs;
+  RxList<String> dailyAppliedUsersState = <String>[].obs;
 
   @override
   void onInit() {
@@ -111,13 +113,19 @@ class MainController extends GetxController {
   }
 
   Future<void> getInitialData() async {
-    isLoading(true);
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   isLoading(true);
+    // });
     try {
       await getAllEatings();
+      await getUserInfo();
     } finally {
       setMonthlyAllEatings();
       setMonthlyUserEatings();
-      isLoading(false);
+      getDailyAppliedUsers();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        isLoading(false);
+      });
     }
     return;
   }
@@ -157,6 +165,8 @@ class MainController extends GetxController {
     final List<Eating> dailyEatings = monthlyAllEatingMap[focusedDay.value]!;
     final List<String> dailyAppliedUsers =
         dailyEatings.map((e) => e.username).toList();
+
+    dailyAppliedUsersState.assignAll(dailyAppliedUsers);
     return dailyAppliedUsers;
   }
 }

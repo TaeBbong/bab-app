@@ -17,6 +17,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
+    controller.getInitialData();
     super.initState();
   }
 
@@ -142,6 +143,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     const SizedBox(height: 24),
                     Container(
+                      width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       // margin: const EdgeInsets.symmetric(horizontal: 16),
                       decoration:
@@ -157,14 +159,6 @@ class _MainPageState extends State<MainPage> {
                             overflow: TextOverflow.ellipsis,
                             style: textTheme.bodySmall,
                           ),
-                          const SizedBox(height: 16),
-                          Text('오늘 내 신청 상태', style: textTheme.titleMedium),
-                          SizedBox(height: 4),
-                          controller.monthlyUserEatingMap[MyDateUtils.onlyDates(
-                                controller.focusedDay.value,
-                              )]!
-                              ? Text('신청', style: textTheme.labelMedium)
-                              : Text('미신청', style: textTheme.labelMedium),
                         ],
                       ),
                     ),
@@ -180,13 +174,28 @@ class _MainPageState extends State<MainPage> {
                                 )]!
                                 ? controller.cancelEating
                                 : controller.applyEating,
+                        style:
+                            controller
+                                    .monthlyUserEatingMap[MyDateUtils.onlyDates(
+                                  controller.focusedDay.value,
+                                )]!
+                                ? ButtonStyle(
+                                  backgroundColor: WidgetStatePropertyAll(
+                                    Palette.burgundy600,
+                                  ),
+                                )
+                                : ButtonStyle(
+                                  backgroundColor: WidgetStatePropertyAll(
+                                    Palette.deepPurple,
+                                  ),
+                                ),
                         child:
                             controller
                                     .monthlyUserEatingMap[MyDateUtils.onlyDates(
                                   controller.focusedDay.value,
                                 )]!
-                                ? const Text('식사 신청하기')
-                                : const Text('식사 취소하기'),
+                                ? const Text('식사 취소하기')
+                                : const Text('식사 신청하기'),
                       ),
                     ),
                   ],
