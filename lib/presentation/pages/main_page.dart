@@ -72,14 +72,6 @@ class _MainPageState extends State<MainPage> {
                       ),
                       calendarStyle: CalendarStyle(
                         outsideDaysVisible: false,
-                        todayDecoration: BoxDecoration(
-                          color: Palette.beige100,
-                          shape: BoxShape.circle,
-                        ),
-                        selectedDecoration: BoxDecoration(
-                          color: Palette.beige,
-                          shape: BoxShape.circle,
-                        ),
                         defaultTextStyle: const TextStyle(fontSize: 16),
                         selectedTextStyle: const TextStyle(
                           fontSize: 16,
@@ -121,7 +113,7 @@ class _MainPageState extends State<MainPage> {
                             child: Stack(
                               children: [
                                 Align(
-                                  alignment: Alignment.topLeft,
+                                  alignment: Alignment.topCenter,
                                   child: Text(
                                     '${date.day}',
                                     style: const TextStyle(fontSize: 14),
@@ -129,7 +121,83 @@ class _MainPageState extends State<MainPage> {
                                 ),
                                 if (hasAppliedOnDate)
                                   const Align(
-                                    alignment: Alignment.bottomRight,
+                                    alignment: Alignment.bottomCenter,
+                                    child: Text(
+                                      '🍱',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                        selectedBuilder: (context, date, focusedDay) {
+                          final bool hasAppliedOnDate =
+                              controller
+                                  .monthlyUserEatingMap[MyDateUtils.onlyDates(
+                                date,
+                              )]!;
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Palette.deepPurple),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.all(4),
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    '${date.day}',
+                                    style:
+                                        MyDateUtils.onlyDates(date) ==
+                                                MyDateUtils.onlyDates(
+                                                  DateTime.now(),
+                                                )
+                                            ? const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Palette.deepPurple,
+                                            )
+                                            : const TextStyle(fontSize: 14),
+                                  ),
+                                ),
+                                if (hasAppliedOnDate)
+                                  const Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Text(
+                                      '🍱',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          );
+                        },
+                        todayBuilder: (context, date, focusedDay) {
+                          final bool hasAppliedOnDate =
+                              controller
+                                  .monthlyUserEatingMap[MyDateUtils.onlyDates(
+                                date,
+                              )]!;
+                          return Padding(
+                            padding: const EdgeInsets.all(4),
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Text(
+                                    '${date.day}',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.deepPurple,
+                                    ),
+                                  ),
+                                ),
+                                if (hasAppliedOnDate)
+                                  const Align(
+                                    alignment: Alignment.bottomCenter,
                                     child: Text(
                                       '🍱',
                                       style: TextStyle(fontSize: 16),
