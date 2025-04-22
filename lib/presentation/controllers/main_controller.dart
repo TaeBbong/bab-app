@@ -45,6 +45,8 @@ class MainController extends GetxController {
   }
 
   void onPageChanged(DateTime focused) {
+    setMonthlyAllEatings();
+    setMonthlyUserEatings();
     focusedDay.value = MyDateUtils.onlyDates(focused);
   }
 

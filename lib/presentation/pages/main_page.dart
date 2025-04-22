@@ -58,8 +58,6 @@ class _MainPageState extends State<MainPage> {
                       },
                       onPageChanged: (focusedDay) {
                         controller.onPageChanged(focusedDay);
-                        controller.setMonthlyAllEatings();
-                        controller.setMonthlyUserEatings();
                       },
                       calendarFormat: CalendarFormat.month,
                       availableCalendarFormats: const {
@@ -103,6 +101,8 @@ class _MainPageState extends State<MainPage> {
                           );
                         },
                         defaultBuilder: (context, date, events) {
+                          // TODO: hasAppliedOnDate를 선언하는 defaultBuilder는 Obx와 관계 없이 TableCalendar 단에서 실행됨.
+                          // 따라서 allUserEatingMap을 통해 전체를 미리 선언해놓는게 나을듯
                           final bool hasAppliedOnDate =
                               controller
                                   .monthlyUserEatingMap[MyDateUtils.onlyDates(
