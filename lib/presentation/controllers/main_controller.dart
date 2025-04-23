@@ -45,9 +45,11 @@ class MainController extends GetxController {
   }
 
   void onPageChanged(DateTime focused) {
-    setMonthlyAllEatings();
-    setMonthlyUserEatings();
-    focusedDay.value = MyDateUtils.onlyDates(focused);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      focusedDay.value = MyDateUtils.onlyDates(focused);
+      setMonthlyAllEatings();
+      setMonthlyUserEatings();
+    });
   }
 
   /// Handler which is onPressed MainPage's apply/cancel button.
@@ -80,6 +82,11 @@ class MainController extends GetxController {
     final DateTime cancelDate = MyDateUtils.onlyDates(selectedDay.value);
     final UserInfo userInfo = await getUserInfoUsecase.execute();
     String docId = '';
+
+    if (cancelDate.isBefore(MyDateUtils.onlyDates(DateTime.now()))) {
+      Get.snackbar('Error occured!', '이전 식사를 취소할 수 없습니다.');
+      return;
+    }
 
     if (monthlyAllEatingMap[cancelDate] == null) {
       Get.snackbar('Error occured!', 'Invalid request from empty list in date');
@@ -170,5 +177,10 @@ class MainController extends GetxController {
 
     dailyAppliedUsersState.assignAll(dailyAppliedUsers);
     return dailyAppliedUsers;
+  }
+
+  bool checkApplyOrCancel(DateTime date) {
+    bool? hasApplied = monthlyUserEatingMap[MyDateUtils.onlyDates(date)];
+    return hasApplied ?? false;
   }
 }

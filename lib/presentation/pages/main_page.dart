@@ -101,13 +101,6 @@ class _MainPageState extends State<MainPage> {
                           );
                         },
                         defaultBuilder: (context, date, events) {
-                          // TODO: hasAppliedOnDate를 선언하는 defaultBuilder는 Obx와 관계 없이 TableCalendar 단에서 실행됨.
-                          // 따라서 allUserEatingMap을 통해 전체를 미리 선언해놓는게 나을듯
-                          final bool hasAppliedOnDate =
-                              controller
-                                  .monthlyUserEatingMap[MyDateUtils.onlyDates(
-                                date,
-                              )]!;
                           return Padding(
                             padding: const EdgeInsets.all(4),
                             child: Stack(
@@ -119,7 +112,7 @@ class _MainPageState extends State<MainPage> {
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                 ),
-                                if (hasAppliedOnDate)
+                                if (controller.checkApplyOrCancel(date))
                                   const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Text(
@@ -132,11 +125,6 @@ class _MainPageState extends State<MainPage> {
                           );
                         },
                         selectedBuilder: (context, date, focusedDay) {
-                          final bool hasAppliedOnDate =
-                              controller
-                                  .monthlyUserEatingMap[MyDateUtils.onlyDates(
-                                date,
-                              )]!;
                           return Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Palette.deepPurple),
@@ -162,7 +150,7 @@ class _MainPageState extends State<MainPage> {
                                             : const TextStyle(fontSize: 14),
                                   ),
                                 ),
-                                if (hasAppliedOnDate)
+                                if (controller.checkApplyOrCancel(date))
                                   const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Text(
@@ -175,11 +163,6 @@ class _MainPageState extends State<MainPage> {
                           );
                         },
                         todayBuilder: (context, date, focusedDay) {
-                          final bool hasAppliedOnDate =
-                              controller
-                                  .monthlyUserEatingMap[MyDateUtils.onlyDates(
-                                date,
-                              )]!;
                           return Padding(
                             padding: const EdgeInsets.all(4),
                             child: Stack(
@@ -195,7 +178,7 @@ class _MainPageState extends State<MainPage> {
                                     ),
                                   ),
                                 ),
-                                if (hasAppliedOnDate)
+                                if (controller.checkApplyOrCancel(date))
                                   const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Text(
@@ -236,17 +219,15 @@ class _MainPageState extends State<MainPage> {
                       height: 48,
                       child: ElevatedButton(
                         onPressed:
-                            controller
-                                    .monthlyUserEatingMap[MyDateUtils.onlyDates(
+                            controller.checkApplyOrCancel(
                                   controller.focusedDay.value,
-                                )]!
+                                )
                                 ? controller.cancelEating
                                 : controller.applyEating,
                         style:
-                            controller
-                                    .monthlyUserEatingMap[MyDateUtils.onlyDates(
+                            controller.checkApplyOrCancel(
                                   controller.focusedDay.value,
-                                )]!
+                                )
                                 ? ButtonStyle(
                                   backgroundColor: WidgetStatePropertyAll(
                                     Palette.burgundy600,
@@ -258,10 +239,9 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                 ),
                         child:
-                            controller
-                                    .monthlyUserEatingMap[MyDateUtils.onlyDates(
+                            controller.checkApplyOrCancel(
                                   controller.focusedDay.value,
-                                )]!
+                                )
                                 ? const Text('식사 취소하기')
                                 : const Text('식사 신청하기'),
                       ),
