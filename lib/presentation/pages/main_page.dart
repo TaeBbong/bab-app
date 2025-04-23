@@ -35,7 +35,14 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         centerTitle: false,
         title: Text('🗓 신청 현황', style: textTheme.titleLarge),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.person))],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.toNamed('/my');
+            },
+            icon: Icon(Icons.person),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
