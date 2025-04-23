@@ -69,7 +69,9 @@ class _MyPageState extends State<MyPage> {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.arrow_left),
-                          onPressed: controller.goToPreviousMonth,
+                          onPressed: () async {
+                            controller.goToPreviousMonth();
+                          },
                         ),
                         Text(
                           '${controller.selectedYear.value}년 ${controller.selectedMonth.value}월',
@@ -77,7 +79,9 @@ class _MyPageState extends State<MyPage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.arrow_right),
-                          onPressed: controller.goToNextMonth,
+                          onPressed: () async {
+                            controller.goToNextMonth();
+                          },
                         ),
                       ],
                     ),

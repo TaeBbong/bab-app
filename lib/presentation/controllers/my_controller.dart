@@ -18,33 +18,30 @@ class MyController extends GetxController {
     getMonthlyUserEatings();
   }
 
-  void goToPreviousMonth() {
+  void goToPreviousMonth() async {
     if (selectedMonth.value == 1) {
       selectedMonth.value = 12;
       selectedYear.value -= 1;
     } else {
       selectedMonth.value -= 1;
     }
+    await getMonthlyUserEatings();
   }
 
-  void goToNextMonth() {
+  void goToNextMonth() async {
     if (selectedMonth.value == 12) {
       selectedMonth.value = 1;
       selectedYear.value += 1;
     } else {
       selectedMonth.value += 1;
     }
+    await getMonthlyUserEatings();
   }
 
   Future<void> getMonthlyUserEatings() async {
-    isLoading(true);
-    try {
-      final Map<DateTime, bool> status = await monthlyUserEatUsecase.execute(
-        focusedDay: DateTime(selectedYear.value, selectedMonth.value, 1),
-      );
-      monthlyUserAmount.value = status.values.where((v) => v).length;
-    } finally {
-      isLoading(false);
-    }
+    final Map<DateTime, bool> status = await monthlyUserEatUsecase.execute(
+      focusedDay: DateTime(selectedYear.value, selectedMonth.value, 1),
+    );
+    monthlyUserAmount.value = status.values.where((v) => v).length;
   }
 }
