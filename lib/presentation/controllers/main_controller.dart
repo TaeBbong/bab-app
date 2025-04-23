@@ -47,6 +47,7 @@ class MainController extends GetxController {
   void onPageChanged(DateTime focused) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       focusedDay.value = MyDateUtils.onlyDates(focused);
+      selectedDay.value = MyDateUtils.onlyDates(focused);
       setMonthlyAllEatings();
       setMonthlyUserEatings();
     });
@@ -61,6 +62,14 @@ class MainController extends GetxController {
     final Eating applyResult = await applyEatUsecase.execute(
       eatDate: applyDate,
     );
+
+    final currentAllList = allEatingMap[applyDate];
+    if (currentAllList != null) {
+      currentAllList.add(applyResult);
+      allEatingMap[applyDate] = List.from(currentAllList);
+    } else {
+      allEatingMap[applyDate] = [applyResult];
+    }
 
     monthlyUserEatingMap.assignAll({...monthlyUserEatingMap, applyDate: true});
 
@@ -115,6 +124,16 @@ class MainController extends GetxController {
     if (list != null) {
       list.removeWhere((e) => e.id == docId);
       monthlyAllEatingMap[cancelDate] = List.from(list);
+    }
+
+    final List<Eating>? allList = allEatingMap[cancelDate];
+    if (allList != null) {
+      allList.removeWhere((e) => e.id == docId);
+      if (allList.isEmpty) {
+        allEatingMap.remove(cancelDate);
+      } else {
+        allEatingMap[cancelDate] = List.from(allList);
+      }
     }
 
     Get.snackbar('취소 완료', '식사 신청이 취소되었습니다.');
