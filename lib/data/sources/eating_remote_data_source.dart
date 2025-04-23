@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../models/eating_model.dart';
 
 abstract class EatingRemoteDataSource {
-  Future<void> addEating(EatingModel model);
+  Future<String> addEating(EatingModel model);
   Future<void> updateEating(EatingModel model);
   Future<void> deleteEating(String id);
   Future<EatingModel?> getEating(String id);
@@ -28,8 +28,9 @@ class EatingRemoteDataSourceImpl implements EatingRemoteDataSource {
       );
 
   @override
-  Future<void> addEating(EatingModel model) async {
-    await _collection.add(model);
+  Future<String> addEating(EatingModel model) async {
+    final DocumentReference<EatingModel> ref = await _collection.add(model);
+    return ref.id;
   }
 
   @override
