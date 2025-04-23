@@ -80,7 +80,6 @@ class MainController extends GetxController {
   /// Find docId / eating object from where?
   Future<void> cancelEating() async {
     final DateTime cancelDate = MyDateUtils.onlyDates(selectedDay.value);
-    final UserInfo userInfo = await getUserInfoUsecase.execute();
     String docId = '';
 
     if (cancelDate.isBefore(MyDateUtils.onlyDates(DateTime.now()))) {
@@ -94,7 +93,7 @@ class MainController extends GetxController {
     }
 
     for (Eating eating in monthlyAllEatingMap[cancelDate]!) {
-      if (eating.username == userInfo.username) {
+      if (eating.username == userInfo.value.username) {
         docId = eating.id;
         break;
       }
