@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../core/themes/box_decoration_theme.dart';
+import '../../core/utils/money_utils.dart';
 import '../controllers/my_controller.dart';
 
 class MyPage extends StatefulWidget {
@@ -109,7 +110,9 @@ class _MyPageState extends State<MyPage> {
                               Text('이번 달 식대 총액', style: textTheme.bodySmall),
                               SizedBox(height: 4),
                               Text(
-                                '₩${controller.monthlyUserAmount.value * 7500}',
+                                MoneyUtils.formatKrMoney(
+                                  controller.monthlyUserAmount.value * 7500,
+                                ),
                                 style: textTheme.titleMedium,
                               ),
                             ],
