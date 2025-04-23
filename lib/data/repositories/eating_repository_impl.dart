@@ -20,14 +20,14 @@ class EatingRepositoryImpl implements EatingRepository {
     final String username = await _local.getUsername();
     final String group = await _local.getGroup();
     final Eating eating = Eating(
-      id: '',
       applyDate: now,
       eatDate: DateTime(eatDate.year, eatDate.month, eatDate.day),
       username: username,
       group: group,
     );
-    await _remote.addEating(EatingMapper.toModel(eating));
-    return eating;
+    final String id = await _remote.addEating(EatingMapper.toModel(eating));
+    final Eating finalEating = eating.copyWith(id: id);
+    return finalEating;
   }
 
   @override
