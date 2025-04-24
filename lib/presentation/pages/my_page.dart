@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/themes/box_decoration_theme.dart';
+import '../../core/utils/env.dart';
 import '../../core/utils/money_utils.dart';
 import '../controllers/my_controller.dart';
 
@@ -47,23 +48,15 @@ class _MyPageState extends State<MyPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '하나 000-00000-00000 권태형',
-                          style: textTheme.bodyMedium,
-                        ),
-                        TextButton.icon(
-                          onPressed: () {
-                            Clipboard.setData(
-                              const ClipboardData(
-                                text: '하나 000-00000-00000 권태형',
-                              ),
-                            );
-                            Get.snackbar('완료', '계좌번호가 복사되었습니다.');
+                        InkWell(
+                          onTap: () async {
+                            if (!await launchUrl(Uri.parse(Env.kakaoLink))) {
+                              throw Exception('Could not launch');
+                            }
                           },
-                          icon: const Icon(Icons.copy, size: 18),
-                          label: const Text('복사'),
-                          style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            '카카오톡으로 송금하기',
+                            style: textTheme.bodyMedium,
                           ),
                         ),
                       ],
