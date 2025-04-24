@@ -7,9 +7,9 @@ import '../../core/utils/env.dart';
 import '../../core/utils/money_utils.dart';
 import '../controllers/my_controller.dart';
 
-// TODO: 마이페이지는 필요한가? 다시 고민하기
-// TODO: 정산하기 기능(카카오)
-// TODO: 픽업할 사람 랜덤으로 뽑아서 푸시 알림 => 서버에서 푸시알림.. => 서버 기능이 필요한데..? => Firestore가지고 되나..?
+// TODO: 마이페이지를 없애고 관리자 페이지만 유지
+// TODO: 1. 오늘의 신청 현황(신청자 수, 신청자 목록) / 2. 카톡 메세지 생성  / 3. 픽업 담당자 지정(랜덤)
+// TODO: 굳이 월간 현황 같은 데이터 필요 없을듯
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});

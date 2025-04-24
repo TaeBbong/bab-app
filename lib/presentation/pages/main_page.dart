@@ -7,6 +7,9 @@ import '../../core/themes/box_decoration_theme.dart';
 import '../../core/themes/palette.dart';
 import '../controllers/main_controller.dart';
 
+// TODO: 신청할 때 카카오링크 열어서 송금하기
+// TODO: 송금 후 콜백을 받을 수 있으면, 해당 결과 확인하고 신청 완료시키기
+// TODO: 달력에 일일 신청자 수 표시하기(하단 좌측)
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
