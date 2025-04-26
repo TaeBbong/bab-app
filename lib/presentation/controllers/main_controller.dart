@@ -12,7 +12,6 @@ import '../../domain/usecases/get_user_info_usecase.dart';
 import '../../domain/usecases/set_monthly_all_eat_usecase.dart';
 import '../../domain/usecases/set_monthly_user_eat_usecase.dart';
 
-// TODO: 식사 신청 마감 처리
 // TODO: 식사 신청 시 송금 처리
 class MainController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
@@ -60,6 +59,18 @@ class MainController extends GetxController {
   ///
   Future<void> applyEating() async {
     final DateTime applyDate = MyDateUtils.onlyDates(selectedDay.value);
+    final DateTime deadline = DateTime(
+      applyDate.year,
+      applyDate.month,
+      applyDate.day,
+      8,
+      30,
+    );
+
+    if (DateTime.now().isAfter(deadline)) {
+      Get.snackbar('Error occured!', '식사 신청이 마감되었습니다!');
+      return;
+    }
 
     final Eating applyResult = await applyEatUsecase.execute(
       eatDate: applyDate,
@@ -95,6 +106,18 @@ class MainController extends GetxController {
   /// Find docId / eating object from where?
   Future<void> cancelEating() async {
     final DateTime cancelDate = MyDateUtils.onlyDates(selectedDay.value);
+    final DateTime deadline = DateTime(
+      cancelDate.year,
+      cancelDate.month,
+      cancelDate.day,
+      8,
+      30,
+    );
+
+    if (DateTime.now().isAfter(deadline)) {
+      Get.snackbar('Error occured!', '식사 취소가 마감되었습니다!');
+      return;
+    }
     String docId = '';
 
     if (cancelDate.isBefore(MyDateUtils.onlyDates(DateTime.now()))) {
