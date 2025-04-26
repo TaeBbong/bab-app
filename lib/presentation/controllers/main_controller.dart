@@ -14,7 +14,6 @@ import '../../domain/usecases/set_monthly_user_eat_usecase.dart';
 
 // TODO: 식사 신청 마감 처리
 // TODO: 식사 신청 시 송금 처리
-// TODO: 식사 신청 시 dailyAppliedUsers에 2번 등록되는 에러 해결
 class MainController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
@@ -78,8 +77,12 @@ class MainController extends GetxController {
 
     final currentList = monthlyAllEatingMap[applyDate];
     if (currentList != null) {
-      currentList.add(applyResult);
-      monthlyAllEatingMap[applyDate] = List.from(currentList);
+      if (currentList.any((eating) => eating.id == applyResult.id)) {
+        monthlyAllEatingMap[applyDate] = List.from(currentList);
+      } else {
+        currentList.add(applyResult);
+        monthlyAllEatingMap[applyDate] = List.from(currentList);
+      }
     } else {
       monthlyAllEatingMap[applyDate] = [applyResult];
     }
