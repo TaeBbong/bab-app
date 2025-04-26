@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../models/eating_model.dart';
 
 abstract class EatingRemoteDataSource {
+  Stream<List<EatingModel>> watchAllEatings();
   Future<String> addEating(EatingModel model);
   Future<void> updateEating(EatingModel model);
   Future<void> deleteEating(String id);
@@ -26,6 +27,13 @@ class EatingRemoteDataSourceImpl implements EatingRemoteDataSource {
             ).copyWith(id: snapshot.id),
         toFirestore: (model, _) => model.toJson(),
       );
+
+  @override
+  Stream<List<EatingModel>> watchAllEatings() {
+    return _collection.snapshots().map(
+      (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
+  }
 
   @override
   Future<String> addEating(EatingModel model) async {
