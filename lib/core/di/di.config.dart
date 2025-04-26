@@ -18,6 +18,7 @@ import 'package:bab/domain/repositories/eating_repository.dart' as _i67;
 import 'package:bab/domain/repositories/user_info_repository.dart' as _i507;
 import 'package:bab/domain/usecases/apply_eat_usecase.dart' as _i209;
 import 'package:bab/domain/usecases/cancel_eat_usecase.dart' as _i316;
+import 'package:bab/domain/usecases/get_daily_eating_usecase.dart' as _i777;
 import 'package:bab/domain/usecases/get_user_info_usecase.dart' as _i315;
 import 'package:bab/domain/usecases/monthly_all_eat_usecase.dart' as _i990;
 import 'package:bab/domain/usecases/monthly_user_eat_usecase.dart' as _i221;
@@ -68,23 +69,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i209.ApplyEatUsecase>(
       () => _i209.ApplyEatUsecase(gh<_i67.EatingRepository>()),
     );
-    gh.factory<_i316.CancelEatUsecase>(
-      () => _i316.CancelEatUsecase(gh<_i67.EatingRepository>()),
-    );
-    gh.factory<_i221.MonthlyUserEatUsecase>(
-      () => _i221.MonthlyUserEatUsecase(gh<_i67.EatingRepository>()),
-    );
-    gh.factory<_i990.MonthlyAllEatUsecase>(
-      () => _i990.MonthlyAllEatUsecase(gh<_i67.EatingRepository>()),
-    );
     gh.factory<_i995.OverallEatUsecase>(
       () => _i995.OverallEatUsecase(gh<_i67.EatingRepository>()),
     );
     gh.factory<_i341.SetMonthlyAllEatUsecase>(
       () => _i341.SetMonthlyAllEatUsecase(gh<_i67.EatingRepository>()),
     );
+    gh.factory<_i316.CancelEatUsecase>(
+      () => _i316.CancelEatUsecase(gh<_i67.EatingRepository>()),
+    );
     gh.factory<_i1024.SetMonthlyUserEatUsecase>(
       () => _i1024.SetMonthlyUserEatUsecase(gh<_i67.EatingRepository>()),
+    );
+    gh.factory<_i221.MonthlyUserEatUsecase>(
+      () => _i221.MonthlyUserEatUsecase(gh<_i67.EatingRepository>()),
+    );
+    gh.factory<_i777.GetDailyEatingUsecase>(
+      () => _i777.GetDailyEatingUsecase(gh<_i67.EatingRepository>()),
+    );
+    gh.factory<_i990.MonthlyAllEatUsecase>(
+      () => _i990.MonthlyAllEatUsecase(gh<_i67.EatingRepository>()),
     );
     return this;
   }
