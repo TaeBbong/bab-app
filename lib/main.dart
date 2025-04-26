@@ -9,6 +9,7 @@ import 'core/themes/light_theme.dart';
 import 'data/models/user_info_model.dart';
 import 'data/sources/user_info_local_data_source.dart';
 import 'presentation/pages/admin_page.dart';
+import 'presentation/pages/daily_page.dart';
 import 'presentation/pages/init_page.dart';
 import 'presentation/pages/main_page.dart';
 import 'presentation/pages/my_page.dart';
@@ -21,7 +22,7 @@ void main() async {
   final UserInfoLocalDataSource userInfoLocalDataSource =
       getIt<UserInfoLocalDataSource>();
   final UserInfoModel? userInfo = await userInfoLocalDataSource.getUserInfo();
-  runApp(MainApp(initialRoute: userInfo == null ? '/init' : '/main'));
+  runApp(MainApp(initialRoute: userInfo == null ? '/init' : '/daily'));
 }
 
 class MainApp extends StatelessWidget {
@@ -44,6 +45,7 @@ class MainApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         '/init': (context) => InitPage(),
+        '/daily': (context) => DailyPage(),
         '/main': (context) => MainPage(),
         '/my': (context) => MyPage(),
         '/admin': (context) => AdminPage(),
