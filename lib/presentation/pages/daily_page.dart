@@ -45,13 +45,24 @@ class _DailyPageState extends State<DailyPage> {
             return !controller.isLoading.value
                 ? Column(
                   children: [
+                    Text(
+                      '⏰ 신청/취소 마감은 당일 08:50입니다. ⏰',
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 24),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
-                      child: Text(
-                        '😀 내 신청 상태 : 신청!',
-                        style: textTheme.titleLarge,
-                      ),
+                      child:
+                          controller.checkApplyOrCancel()
+                              ? Text(
+                                '😀 내 신청 상태 : 신청',
+                                style: textTheme.titleLarge,
+                              )
+                              : Text(
+                                '😀 내 신청 상태 : 미신청',
+                                style: textTheme.titleLarge,
+                              ),
                     ),
                     const SizedBox(height: 12),
                     SizedBox(
@@ -61,11 +72,10 @@ class _DailyPageState extends State<DailyPage> {
                           horizontal: 16,
                           vertical: 8,
                         ),
-
                         shape: Border.all(color: Colors.transparent),
                         collapsedShape: Border.all(color: Colors.transparent),
                         title: Text(
-                          '🍱 오늘의 신청자 : 00명',
+                          '🍱 오늘의 신청자 : ${controller.dailyEatings.length}명',
                           style: textTheme.titleLarge,
                         ),
                         children: [
@@ -79,24 +89,7 @@ class _DailyPageState extends State<DailyPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  // controller.getDailyAppliedUsers().join(', '),
-                                  [
-                                    '권태형',
-                                    '이철수',
-                                    '김철수',
-                                    '권철수',
-                                    '명철수',
-                                    '권태형',
-                                    '이철수',
-                                    '김철수',
-                                    '권철수',
-                                    '명철수',
-                                    '권태형',
-                                    '이철수',
-                                    '김철수',
-                                    '권철수',
-                                    '명철수',
-                                  ].join(', '),
+                                  controller.getDailyAppliedUsers().join(', '),
                                   maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
                                   style: textTheme.bodySmall,
@@ -175,7 +168,7 @@ class _DailyPageState extends State<DailyPage> {
                                     onPressed: () {
                                       Clipboard.setData(
                                         const ClipboardData(
-                                          text: '하나 000-00000-00000 권태형',
+                                          text: '하나 391-911051-77607 권태형 7500원',
                                         ),
                                       );
                                       Get.snackbar('완료', '계좌번호가 복사되었습니다.');
@@ -215,7 +208,10 @@ class _DailyPageState extends State<DailyPage> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    child: const Text('카카오페이로 송금하기'),
+                                    child: const Text(
+                                      '카카오페이로 송금하기',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -230,15 +226,11 @@ class _DailyPageState extends State<DailyPage> {
                       height: 48,
                       child: ElevatedButton(
                         onPressed:
-                            controller.checkApplyOrCancel(
-                                  controller.focusedDay.value,
-                                )
+                            controller.checkApplyOrCancel()
                                 ? controller.cancelEating
                                 : controller.applyEating,
                         style:
-                            controller.checkApplyOrCancel(
-                                  controller.focusedDay.value,
-                                )
+                            controller.checkApplyOrCancel()
                                 ? ButtonStyle(
                                   backgroundColor: WidgetStatePropertyAll(
                                     Palette.burgundy600,
@@ -250,9 +242,7 @@ class _DailyPageState extends State<DailyPage> {
                                   ),
                                 ),
                         child:
-                            controller.checkApplyOrCancel(
-                                  controller.focusedDay.value,
-                                )
+                            controller.checkApplyOrCancel()
                                 ? const Text('식사 취소하기')
                                 : const Text('식사 신청하기'),
                       ),
