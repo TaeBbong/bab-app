@@ -137,7 +137,7 @@ class DailyController extends GetxController {
         dailyEatings.assignAll(eatings);
       },
       onError: (error) {
-        print('Error watching today eatings: $error');
+        throw ('Error watching today eatings: $error');
       },
     );
   }
