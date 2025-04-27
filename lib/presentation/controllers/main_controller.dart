@@ -12,7 +12,6 @@ import '../../domain/usecases/get_user_info_usecase.dart';
 import '../../domain/usecases/set_monthly_all_eat_usecase.dart';
 import '../../domain/usecases/set_monthly_user_eat_usecase.dart';
 
-// TODO: 식사 신청 시 송금 처리
 class MainController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();

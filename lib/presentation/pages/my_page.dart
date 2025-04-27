@@ -7,10 +7,6 @@ import '../../core/utils/env.dart';
 import '../../core/utils/money_utils.dart';
 import '../controllers/my_controller.dart';
 
-// TODO: 마이페이지를 없애고 관리자 페이지만 유지
-// TODO: 1. 오늘의 신청 현황(신청자 수, 신청자 목록) / 2. 카톡 메세지 생성  / 3. 픽업 담당자 지정(랜덤)
-// TODO: 굳이 월간 현황 같은 데이터 필요 없을듯
-
 class MyPage extends StatefulWidget {
   const MyPage({super.key});
   @override
