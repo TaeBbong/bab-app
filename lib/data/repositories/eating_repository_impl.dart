@@ -89,6 +89,13 @@ class EatingRepositoryImpl implements EatingRepository {
   }
 
   @override
+  Stream<List<Eating>> watchAllEatings() {
+    return _remote.watchAllEatings().map(
+      (models) => models.map((model) => EatingMapper.toEntity(model)).toList(),
+    );
+  }
+
+  @override
   Stream<List<Eating>> watchTodayEatings() {
     return _remote.watchTodayEatings().map(
       (models) => models.map((model) => EatingMapper.toEntity(model)).toList(),
