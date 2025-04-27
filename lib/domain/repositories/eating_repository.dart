@@ -9,4 +9,5 @@ abstract class EatingRepository {
   Future<List<EatingModel>> getAllEatingsOnDate(DateTime date);
   Future<List<EatingModel>> getUserEatingsInMonth(DateTime monthDate);
   Future<List<EatingModel>> getAllEatingsInMonth(DateTime monthDate);
+  Stream<List<Eating>> watchTodayEatings();
 }

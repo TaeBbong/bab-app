@@ -5,6 +5,7 @@ import '../models/eating_model.dart';
 
 abstract class EatingRemoteDataSource {
   Stream<List<EatingModel>> watchAllEatings();
+  Stream<List<EatingModel>> watchTodayEatings();
   Future<String> addEating(EatingModel model);
   Future<void> updateEating(EatingModel model);
   Future<void> deleteEating(String id);
@@ -33,6 +34,22 @@ class EatingRemoteDataSourceImpl implements EatingRemoteDataSource {
     return _collection.snapshots().map(
       (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
     );
+  }
+
+  @override
+  Stream<List<EatingModel>> watchTodayEatings() {
+    final DateTime today = DateTime.now();
+    final DateTime startOfDay = DateTime(today.year, today.month, today.day);
+    final DateTime endOfDay = startOfDay.add(const Duration(days: 1));
+
+    return _collection
+        .where(
+          'eatDate',
+          isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
+        )
+        .where('eatDate', isLessThan: Timestamp.fromDate(endOfDay))
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   @override

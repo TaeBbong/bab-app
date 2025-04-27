@@ -88,5 +88,12 @@ class EatingRepositoryImpl implements EatingRepository {
         .toList();
   }
 
+  @override
+  Stream<List<Eating>> watchTodayEatings() {
+    return _remote.watchTodayEatings().map(
+      (models) => models.map((model) => EatingMapper.toEntity(model)).toList(),
+    );
+  }
+
   DateTime _dateOnly(DateTime dt) => DateTime(dt.year, dt.month, dt.day);
 }
