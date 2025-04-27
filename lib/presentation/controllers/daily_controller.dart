@@ -104,7 +104,7 @@ class DailyController extends GetxController {
 
   Future<void> getInitialData() async {
     try {
-      await getDailyEatings();
+      // await getDailyEatings();
       await getUserInfo();
     } finally {
       getDailyAppliedUsers();
@@ -114,13 +114,6 @@ class DailyController extends GetxController {
       });
     }
     return;
-  }
-
-  Future<void> getDailyEatings() async {
-    final List<Eating> results = await dailyEatingUsecase.execute(
-      date: DateTime.now(),
-    );
-    dailyEatings.assignAll(results);
   }
 
   Future<void> getUserInfo() async {
