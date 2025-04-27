@@ -11,8 +11,6 @@ import 'data/sources/user_info_local_data_source.dart';
 import 'presentation/pages/admin_page.dart';
 import 'presentation/pages/daily_page.dart';
 import 'presentation/pages/init_page.dart';
-import 'presentation/pages/main_page.dart';
-import 'presentation/pages/my_page.dart';
 
 // TODO: NotificationService 적용(매일 08:20에 푸시 알림, 08:45에 푸시 알림, 11:00에 푸시 알림)
 void main() async {
@@ -47,8 +45,6 @@ class MainApp extends StatelessWidget {
       routes: {
         '/init': (context) => InitPage(),
         '/daily': (context) => DailyPage(),
-        '/main': (context) => MainPage(),
-        '/my': (context) => MyPage(),
         '/admin': (context) => AdminPage(),
       },
     );

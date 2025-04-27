@@ -9,15 +9,12 @@ import '../../domain/entities/eating.dart';
 import '../../domain/entities/user_info.dart';
 import '../../domain/usecases/apply_eat_usecase.dart';
 import '../../domain/usecases/cancel_eat_usecase.dart';
-import '../../domain/usecases/get_daily_eating_usecase.dart';
 import '../../domain/usecases/get_user_info_usecase.dart';
 import '../../domain/usecases/watch_daily_eating_usecase.dart';
 
 class DailyController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
-  final GetDailyEatingUsecase dailyEatingUsecase =
-      getIt<GetDailyEatingUsecase>();
   final WatchDailyEatingUsecase watchDailyEatingUsecase =
       getIt<WatchDailyEatingUsecase>();
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();

@@ -3,7 +3,6 @@ import 'package:injectable/injectable.dart';
 import '../../core/utils/mappers.dart';
 import '../../domain/entities/eating.dart';
 import '../../domain/repositories/eating_repository.dart';
-import '../../data/models/eating_model.dart';
 import '../sources/eating_remote_data_source.dart';
 import '../sources/user_info_local_data_source.dart';
 
@@ -36,59 +35,6 @@ class EatingRepositoryImpl implements EatingRepository {
   }
 
   @override
-  Future<bool> hasUserEatingOnDate(DateTime date) async {
-    final all = await _remote.getAllEatings();
-    final targetDate = _dateOnly(date);
-    final String username = await _local.getUsername();
-
-    return all.any(
-      (model) =>
-          model.username == username && _dateOnly(model.eatDate) == targetDate,
-    );
-  }
-
-  @override
-  Future<List<EatingModel>> getAllEatings() async {
-    final all = await _remote.getAllEatings();
-    return all;
-  }
-
-  @override
-  Future<List<EatingModel>> getAllEatingsOnDate(DateTime date) async {
-    final targetDate = _dateOnly(date);
-    final all = await _remote.getAllEatings();
-    return all
-        .where((model) => _dateOnly(model.eatDate) == targetDate)
-        .toList();
-  }
-
-  @override
-  Future<List<EatingModel>> getUserEatingsInMonth(DateTime monthDate) async {
-    final all = await _remote.getAllEatings();
-    final String username = await _local.getUsername();
-    return all
-        .where(
-          (model) =>
-              model.username == username &&
-              model.eatDate.year == monthDate.year &&
-              model.eatDate.month == monthDate.month,
-        )
-        .toList();
-  }
-
-  @override
-  Future<List<EatingModel>> getAllEatingsInMonth(DateTime monthDate) async {
-    final all = await _remote.getAllEatings();
-    return all
-        .where(
-          (model) =>
-              model.eatDate.year == monthDate.year &&
-              model.eatDate.month == monthDate.month,
-        )
-        .toList();
-  }
-
-  @override
   Stream<List<Eating>> watchAllEatings() {
     return _remote.watchAllEatings().map(
       (models) => models.map((model) => EatingMapper.toEntity(model)).toList(),
@@ -101,6 +47,4 @@ class EatingRepositoryImpl implements EatingRepository {
       (models) => models.map((model) => EatingMapper.toEntity(model)).toList(),
     );
   }
-
-  DateTime _dateOnly(DateTime dt) => DateTime(dt.year, dt.month, dt.day);
 }
