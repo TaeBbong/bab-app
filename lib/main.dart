@@ -14,6 +14,7 @@ import 'presentation/pages/init_page.dart';
 import 'presentation/pages/main_page.dart';
 import 'presentation/pages/my_page.dart';
 
+// TODO: NotificationService 적용(매일 08:20에 푸시 알림, 08:45에 푸시 알림, 11:00에 푸시 알림)
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
