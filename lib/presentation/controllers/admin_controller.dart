@@ -1,17 +1,21 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 
 import '../../core/di/di.dart';
 import '../../core/utils/date_utils.dart';
 import '../../domain/entities/eating.dart';
-import '../../domain/usecases/overall_eat_usecase.dart';
+import '../../domain/usecases/watch_all_eating_usecase.dart';
 
 class AdminController extends GetxController {
-  final OverallEatUsecase overallEatUsecase = getIt<OverallEatUsecase>();
+  final WatchAllEatingUsecase watchAllEatingUsecase =
+      getIt<WatchAllEatingUsecase>();
 
   Rx<DateTime> selectedDay = MyDateUtils.onlyDates(DateTime.now()).obs;
   RxString selectedWeekday =
       MyDateUtils.weekdayLabel(DateTime.now().weekday - 1).obs;
-  RxMap<DateTime, List<Eating>> totalEatings = <DateTime, List<Eating>>{}.obs;
+  RxMap<DateTime, List<Eating>> dailyEatingMap = <DateTime, List<Eating>>{}.obs;
+  StreamSubscription<List<Eating>>? _allEatingSubscription;
   RxList<String> dailyApplicants = <String>[].obs;
   RxBool isLoading = false.obs;
 
@@ -24,10 +28,7 @@ class AdminController extends GetxController {
   Future<void> getAllEatings() async {
     isLoading(true);
     try {
-      final Map<DateTime, List<Eating>> results =
-          await overallEatUsecase.execute();
-      totalEatings.assignAll(results);
-      onDaySelected();
+      startWatchingAllEatings();
     } finally {
       isLoading(false);
     }
@@ -44,14 +45,29 @@ class AdminController extends GetxController {
   }
 
   void onDaySelected() {
-    if (!totalEatings.containsKey(MyDateUtils.onlyDates(selectedDay.value))) {
+    if (!dailyEatingMap.containsKey(MyDateUtils.onlyDates(selectedDay.value))) {
       dailyApplicants.assignAll([]);
     } else {
       dailyApplicants.assignAll(
-        totalEatings[MyDateUtils.onlyDates(selectedDay.value)]!
+        dailyEatingMap[MyDateUtils.onlyDates(selectedDay.value)]!
             .map((e) => e.username)
             .toList(),
       );
     }
+  }
+
+  void startWatchingAllEatings() {
+    _allEatingSubscription?.cancel();
+    _allEatingSubscription = watchAllEatingUsecase.execute().listen((eatings) {
+      final Map<DateTime, List<Eating>> grouped = {};
+
+      for (final eating in eatings) {
+        final DateTime dateKey = MyDateUtils.onlyDates(eating.eatDate);
+        grouped.putIfAbsent(dateKey, () => []).add(eating);
+      }
+
+      dailyEatingMap.assignAll(grouped);
+      onDaySelected();
+    });
   }
 }
