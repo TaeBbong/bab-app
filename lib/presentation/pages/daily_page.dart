@@ -8,6 +8,7 @@ import '../../core/themes/palette.dart';
 import '../../core/utils/date_utils.dart';
 import '../../core/utils/env.dart';
 import '../controllers/daily_controller.dart';
+import '../widgets/password_dialog.dart';
 
 class DailyPage extends StatefulWidget {
   @override
@@ -32,9 +33,13 @@ class _DailyPageState extends State<DailyPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Get.toNamed('/my');
+              Get.dialog(PasswordDialog());
             },
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person, color: Colors.transparent),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            focusColor: Colors.transparent,
           ),
         ],
       ),
