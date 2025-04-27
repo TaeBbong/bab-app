@@ -27,6 +27,7 @@ import 'package:bab/domain/usecases/register_user_usecase.dart' as _i476;
 import 'package:bab/domain/usecases/set_monthly_all_eat_usecase.dart' as _i341;
 import 'package:bab/domain/usecases/set_monthly_user_eat_usecase.dart'
     as _i1024;
+import 'package:bab/domain/usecases/watch_all_eating_usecase.dart' as _i505;
 import 'package:bab/domain/usecases/watch_daily_eating_usecase.dart' as _i989;
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:get_it/get_it.dart' as _i174;
@@ -93,6 +94,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i989.WatchDailyEatingUsecase>(
       () => _i989.WatchDailyEatingUsecase(gh<_i67.EatingRepository>()),
+    );
+    gh.factory<_i505.WatchAllEatingUsecase>(
+      () => _i505.WatchAllEatingUsecase(gh<_i67.EatingRepository>()),
     );
     return this;
   }
