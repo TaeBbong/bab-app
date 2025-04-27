@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,23 +11,32 @@ import '../../domain/usecases/apply_eat_usecase.dart';
 import '../../domain/usecases/cancel_eat_usecase.dart';
 import '../../domain/usecases/get_daily_eating_usecase.dart';
 import '../../domain/usecases/get_user_info_usecase.dart';
+import '../../domain/usecases/watch_daily_eating_usecase.dart';
 
-// TODO: watchAllEatings 구독 구현하기
 class DailyController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
   final GetDailyEatingUsecase dailyEatingUsecase =
       getIt<GetDailyEatingUsecase>();
+  final WatchDailyEatingUsecase watchDailyEatingUsecase =
+      getIt<WatchDailyEatingUsecase>();
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
   RxBool isLoading = true.obs;
   RxList<Eating> dailyEatings = <Eating>[].obs;
   Rx<UserInfo> userInfo = UserInfo(username: '', group: '').obs;
+  StreamSubscription<List<Eating>>? _eatingSubscription;
 
   @override
   void onInit() {
     super.onInit();
     getInitialData();
+  }
+
+  @override
+  void onClose() {
+    _eatingSubscription?.cancel();
+    super.onClose();
   }
 
   /// Handler which is onPressed MainPage's apply/cancel button.
@@ -46,11 +57,7 @@ class DailyController extends GetxController {
       return;
     }
 
-    final Eating applyResult = await applyEatUsecase.execute(
-      eatDate: applyDate,
-    );
-
-    dailyEatings.add(applyResult);
+    await applyEatUsecase.execute(eatDate: applyDate);
 
     Get.snackbar('신청 완료', '식사 신청이 완료되었습니다.');
   }
@@ -92,19 +99,16 @@ class DailyController extends GetxController {
     }
 
     await cancelEatUsecase.execute(docId: docId);
-    dailyEatings.removeWhere((e) => e.id == docId);
     Get.snackbar('취소 완료', '식사 신청이 취소되었습니다.');
   }
 
   Future<void> getInitialData() async {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   isLoading(true);
-    // });
     try {
       await getDailyEatings();
       await getUserInfo();
     } finally {
       getDailyAppliedUsers();
+      startWatchingTodayEatings();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         isLoading(false);
       });
@@ -131,5 +135,17 @@ class DailyController extends GetxController {
 
   bool checkApplyOrCancel() {
     return dailyEatings.any((e) => e.username == userInfo.value.username);
+  }
+
+  void startWatchingTodayEatings() {
+    _eatingSubscription?.cancel();
+    _eatingSubscription = watchDailyEatingUsecase.execute().listen(
+      (eatings) {
+        dailyEatings.assignAll(eatings);
+      },
+      onError: (error) {
+        print('Error watching today eatings: $error');
+      },
+    );
   }
 }
