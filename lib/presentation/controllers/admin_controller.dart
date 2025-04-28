@@ -9,7 +9,6 @@ import '../../domain/entities/eating.dart';
 import '../../domain/usecases/add_pickup_usecase.dart';
 import '../../domain/usecases/watch_all_eating_usecase.dart';
 
-// TODO: 픽업 담당자 뽑기 기능 추가(data_source, repository, usecase, controller, ui)
 class AdminController extends GetxController {
   final WatchAllEatingUsecase watchAllEatingUsecase =
       getIt<WatchAllEatingUsecase>();
