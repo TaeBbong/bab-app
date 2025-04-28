@@ -130,8 +130,7 @@ class _DailyPageState extends State<DailyPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  // controller.getDailyAppliedUsers().join(', '),
-                                  ['권태형', '이철수'].join(', '),
+                                  controller.pickupUsers.join(', '),
                                   maxLines: 5,
                                   overflow: TextOverflow.ellipsis,
                                   style: textTheme.bodySmall,

@@ -6,23 +6,28 @@ import 'package:get/get.dart';
 import '../../core/di/di.dart';
 import '../../core/utils/date_utils.dart';
 import '../../domain/entities/eating.dart';
+import '../../domain/entities/pickup.dart';
 import '../../domain/entities/user_info.dart';
 import '../../domain/usecases/apply_eat_usecase.dart';
 import '../../domain/usecases/cancel_eat_usecase.dart';
 import '../../domain/usecases/get_user_info_usecase.dart';
 import '../../domain/usecases/watch_daily_eating_usecase.dart';
+import '../../domain/usecases/watch_pickup_usecase.dart';
 
 class DailyController extends GetxController {
   final ApplyEatUsecase applyEatUsecase = getIt<ApplyEatUsecase>();
   final CancelEatUsecase cancelEatUsecase = getIt<CancelEatUsecase>();
   final WatchDailyEatingUsecase watchDailyEatingUsecase =
       getIt<WatchDailyEatingUsecase>();
+  final WatchPickupUsecase watchPickupUsecase = getIt<WatchPickupUsecase>();
   final GetUserInfoUsecase getUserInfoUsecase = getIt<GetUserInfoUsecase>();
 
   RxBool isLoading = true.obs;
   RxList<Eating> dailyEatings = <Eating>[].obs;
   Rx<UserInfo> userInfo = UserInfo(username: '', group: '').obs;
+  RxList<String> pickupUsers = <String>[].obs;
   StreamSubscription<List<Eating>>? _eatingSubscription;
+  StreamSubscription<Pickup>? _pickupSubscription;
 
   @override
   void onInit() {
@@ -33,6 +38,7 @@ class DailyController extends GetxController {
   @override
   void onClose() {
     _eatingSubscription?.cancel();
+    _pickupSubscription?.cancel();
     super.onClose();
   }
 
@@ -106,6 +112,7 @@ class DailyController extends GetxController {
     } finally {
       getDailyAppliedUsers();
       startWatchingTodayEatings();
+      startWatchingTodayPickups();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         isLoading(false);
       });
@@ -135,6 +142,18 @@ class DailyController extends GetxController {
       },
       onError: (error) {
         throw ('Error watching today eatings: $error');
+      },
+    );
+  }
+
+  void startWatchingTodayPickups() {
+    _pickupSubscription?.cancel();
+    _pickupSubscription = watchPickupUsecase.execute().listen(
+      (pickup) {
+        pickupUsers.assignAll(pickup.users);
+      },
+      onError: (error) {
+        throw ('Error watching today pickups: $error');
       },
     );
   }
