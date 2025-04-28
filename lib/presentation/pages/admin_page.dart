@@ -103,7 +103,19 @@ class _AdminPageState extends State<AdminPage> {
                         },
                       ),
                     ),
-
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          await controller.addPickup();
+                          Get.snackbar('선발 완료', '픽업 담당자가 뽑혔습니다!');
+                        },
+                        icon: const Icon(Icons.copy),
+                        label: const Text('픽업 담당자 뽑기'),
+                      ),
+                    ),
                     const SizedBox(height: 12),
                     SizedBox(
                       width: double.infinity,
@@ -116,9 +128,7 @@ class _AdminPageState extends State<AdminPage> {
                                   "${Constants.applyMessagePrefix}${controller.dailyApplicants.length}${Constants.applyMessagePostfix}",
                             ),
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('신청 메시지가 복사되었습니다!')),
-                          );
+                          Get.snackbar('복사 완료', '신청 메시지가 복사되었습니다!');
                         },
                         icon: const Icon(Icons.copy),
                         label: const Text('신청 메시지 생성'),
