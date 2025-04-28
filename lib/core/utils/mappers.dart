@@ -2,8 +2,10 @@
 // UserInfo <-> UserInfoModel
 
 import '../../data/models/eating_model.dart';
+import '../../data/models/pickup_model.dart';
 import '../../data/models/user_info_model.dart';
 import '../../domain/entities/eating.dart';
+import '../../domain/entities/pickup.dart';
 import '../../domain/entities/user_info.dart';
 
 class UserInfoMapper {
@@ -35,5 +37,19 @@ class EatingMapper {
       username: model.username,
       group: model.group,
     );
+  }
+}
+
+class PickupMapper {
+  static PickupModel toModel(Pickup entity) {
+    return PickupModel(
+      id: entity.id,
+      eatDate: entity.eatDate,
+      users: entity.users,
+    );
+  }
+
+  static Pickup toEntity(PickupModel model) {
+    return Pickup(id: model.id, eatDate: model.eatDate, users: model.users);
   }
 }
