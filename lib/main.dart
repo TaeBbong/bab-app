@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 import 'core/di/di.dart';
@@ -13,21 +14,25 @@ import 'presentation/pages/admin_page.dart';
 import 'presentation/pages/daily_page.dart';
 import 'presentation/pages/init_page.dart';
 
-// TODO: iOS url_launcher 설정
-// TODO: appicon, native splash, 배포 설정
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await configureDependencies();
+  UserInfoModel? userInfo;
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  try {
+    await Firebase.initializeApp();
+    await configureDependencies();
 
-  final NotificationService notificationService = getIt<NotificationService>();
-  await notificationService.getPermissions();
-  await notificationService.init();
-
-  final UserInfoLocalDataSource userInfoLocalDataSource =
-      getIt<UserInfoLocalDataSource>();
-  final UserInfoModel? userInfo = await userInfoLocalDataSource.getUserInfo();
-  runApp(MainApp(initialRoute: userInfo == null ? '/init' : '/daily'));
+    final NotificationService notificationService =
+        getIt<NotificationService>();
+    await notificationService.getPermissions();
+    await notificationService.init();
+    final UserInfoLocalDataSource userInfoLocalDataSource =
+        getIt<UserInfoLocalDataSource>();
+    userInfo = await userInfoLocalDataSource.getUserInfo();
+  } finally {
+    FlutterNativeSplash.remove();
+    runApp(MainApp(initialRoute: userInfo == null ? '/init' : '/daily'));
+  }
 }
 
 class MainApp extends StatelessWidget {
