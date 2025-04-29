@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:bab/core/di/modules.dart' as _i549;
+import 'package:bab/core/services/notification_service.dart' as _i342;
 import 'package:bab/data/repositories/eating_repository_impl.dart' as _i80;
 import 'package:bab/data/repositories/pickup_repository_impl.dart' as _i586;
 import 'package:bab/data/repositories/user_info_repository_impl.dart' as _i926;
@@ -45,6 +46,9 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.lazySingleton<_i974.FirebaseFirestore>(() => injectionModule.firestore);
+    gh.lazySingleton<_i342.NotificationService>(
+      () => _i342.NotificationServiceImpl(),
+    );
     gh.lazySingleton<_i748.UserInfoLocalDataSource>(
       () => _i748.UserInfoLocalDataSourceImpl(gh<_i460.SharedPreferences>()),
     );
@@ -81,14 +85,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i209.ApplyEatUsecase>(
       () => _i209.ApplyEatUsecase(gh<_i67.EatingRepository>()),
     );
-    gh.factory<_i316.CancelEatUsecase>(
-      () => _i316.CancelEatUsecase(gh<_i67.EatingRepository>()),
-    );
     gh.factory<_i989.WatchDailyEatingUsecase>(
       () => _i989.WatchDailyEatingUsecase(gh<_i67.EatingRepository>()),
     );
     gh.factory<_i505.WatchAllEatingUsecase>(
       () => _i505.WatchAllEatingUsecase(gh<_i67.EatingRepository>()),
+    );
+    gh.factory<_i316.CancelEatUsecase>(
+      () => _i316.CancelEatUsecase(gh<_i67.EatingRepository>()),
     );
     return this;
   }
