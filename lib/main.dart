@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'core/di/di.dart';
+import 'core/services/notification_service.dart';
 import 'core/themes/dark_theme.dart';
 import 'core/themes/light_theme.dart';
 import 'data/models/user_info_model.dart';
@@ -12,13 +13,16 @@ import 'presentation/pages/admin_page.dart';
 import 'presentation/pages/daily_page.dart';
 import 'presentation/pages/init_page.dart';
 
-// TODO: NotificationService 적용(매일 08:20에 푸시 알림, 08:45에 푸시 알림, 11:00에 푸시 알림)
 // TODO: iOS url_launcher 설정
 // TODO: appicon, native splash, 배포 설정
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await configureDependencies();
+
+  final NotificationService notificationService = getIt<NotificationService>();
+  await notificationService.getPermissions();
+  await notificationService.init();
 
   final UserInfoLocalDataSource userInfoLocalDataSource =
       getIt<UserInfoLocalDataSource>();
