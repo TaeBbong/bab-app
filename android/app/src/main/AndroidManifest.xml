@@ -1,4 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- local_notifications 관련 권한 추가 
+    RECEIVE_BOOT_COMPLETED : 재부팅 시 스케쥴러 다시 등록하여 정상 동작하게끔
+    VIBRATE, WAKE_LOCK : 진동, 화면 잠겨있어도 실행
+    USE_FULL_SCREEN_INTENT : 전체 화면 알림 필요시(전화와 같은)
+    SCHEDULE_EXACT_ALARM, USE_EXACT_ALARM : Android 버전에 따라 정확한 시각에 알림 동작하게끔 설정
+    FOREGROUND_SERVICE : 포그라운드 서비스 권한
+    자세한 내용은 패키지 README 참고
+     -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
         android:label="bab"
         android:name="${applicationName}"
@@ -25,6 +42,17 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- 푸시 알림을 화면에 출력 -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+        <!-- 디바이스 재부팅시 알림 스케쥴 유지 -->
+        <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
