@@ -6,3 +6,6 @@ ios/Runner/GoogleService-Info.plist filter=git-crypt diff=git-crypt
 
 # Kakao Link
 lib/core/utils/env.dart filter=git-crypt diff=git-crypt
+
+# keystore
+upload-keystore.jks filter=git-crypt diff=git-crypt
