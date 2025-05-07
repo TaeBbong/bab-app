@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// import '../../core/di/di.dart';
+// import '../../core/services/notification_service.dart';
 import '../../core/themes/box_decoration_theme.dart';
 import '../../core/themes/palette.dart';
 import '../../core/utils/date_utils.dart';
@@ -17,6 +19,7 @@ class DailyPage extends StatefulWidget {
 
 class _DailyPageState extends State<DailyPage> {
   final DailyController controller = Get.put(DailyController());
+  // final NotificationService _notificationService = getIt<NotificationService>();
 
   @override
   Widget build(BuildContext context) {
@@ -224,6 +227,13 @@ class _DailyPageState extends State<DailyPage> {
                         ],
                       ),
                     ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     _notificationService.addTestNotifySchedule(id: 123);
+                    //     _notificationService.checkScheduledNotifications();
+                    //   },
+                    //   child: Text('test'),
+                    // ),
                     const Spacer(),
                     SizedBox(
                       width: double.infinity,

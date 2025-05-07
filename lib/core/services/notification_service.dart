@@ -22,6 +22,8 @@ abstract class NotificationService {
     required String title,
     required tz.TZDateTime scheduleDate,
   });
+  Future<void> checkScheduledNotifications();
+  Future<void> addTestNotifySchedule({required int id});
 }
 
 @LazySingleton(as: NotificationService)
@@ -175,6 +177,53 @@ class NotificationServiceImpl implements NotificationService {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       payload: scheduleDate.toIso8601String(),
       matchDateTimeComponents: DateTimeComponents.time,
+    );
+  }
+
+  @override
+  Future<void> checkScheduledNotifications() async {
+    List<PendingNotificationRequest> pendingNotifications =
+        await _localNotifyPlugin.pendingNotificationRequests();
+
+    // ignore: avoid_print
+    print("📢 Total Scheduled Notifications: ${pendingNotifications.length}");
+
+    for (var notification in pendingNotifications) {
+      // ignore: avoid_print
+      print(
+        "🔔 ID: ${notification.id}, Title: ${notification.title}, Body: ${notification.body}, Date: ${notification.payload}",
+      );
+    }
+  }
+
+  @override
+  Future<void> addTestNotifySchedule({required int id}) async {
+    NotificationDetails details = const NotificationDetails(
+      iOS: DarwinNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      ),
+      android: AndroidNotificationDetails(
+        "1",
+        "test",
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+
+    tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
+    tz.TZDateTime target = tz.TZDateTime.now(
+      tz.getLocation('Asia/Seoul'),
+    ).add(const Duration(minutes: 1));
+    await _localNotifyPlugin.zonedSchedule(
+      id,
+      "밥",
+      "test notify $id",
+      target,
+      details,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      payload: "https://naver.com",
     );
   }
 }
