@@ -26,6 +26,6 @@ class InitController extends GetxController {
     }
 
     await registerUserUsecase.execute(username: username, group: group);
-    Get.offAllNamed('/main');
+    Get.offAllNamed('/daily');
   }
 }
