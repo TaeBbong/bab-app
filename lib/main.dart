@@ -26,6 +26,7 @@ void main() async {
         getIt<NotificationService>();
     await notificationService.getPermissions();
     await notificationService.init();
+    await notificationService.initialZoneSchedules();
     final UserInfoLocalDataSource userInfoLocalDataSource =
         getIt<UserInfoLocalDataSource>();
     userInfo = await userInfoLocalDataSource.getUserInfo();
